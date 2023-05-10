@@ -13,22 +13,23 @@ const Hero = () => {
     >
       <div className={`${styles.section} w-[90%] 800px:w-[60%]`}>
         <h1
-          className={`text-[35px] leading-[1.2] 800px:text-[60px] text-[#3d3a3a] font-[600] capitalize`}
+          className={`text-[35px] leading-[1.2] 800px:text-[60px] text-[#030303] font-[Cambria] `}
         >
-          Best Collection for <br /> home Decoration
+          - Your Local Market. <br /> - Your Fingertips.
         </h1>
-        <p className="pt-5 text-[16px] font-[Poppins] font-[400] text-[#000000ba]">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Beatae,
-          assumenda? Quisquam itaque <br /> exercitationem labore vel, dolore
-          quidem asperiores, laudantium temporibus soluta optio consequatur{" "}
-          <br /> aliquam deserunt officia. Dolorum saepe nulla provident.
+        <p className="pt-5 text-[16px] font-[Poppins] font-[400] text-[#0a0a0aba]">
+          - Discover the Best Local Shops with Ease! Our ecommerce website helps
+          you find the nearest and most popular stores in your area. Shop local
+          for the best deals and support your community today. <br /> <br /> - Don't
+          settle for the closest store around you, settle for the best closest
+          store around you.
         </p>
         <Link to="/products" className="inline-block">
-            <div className={`${styles.button} mt-5`}>
-                 <span className="text-[#fff] font-[Poppins] text-[18px]">
-                    Shop Now
-                 </span>
-            </div>
+          <div className={`${styles.button} mt-5`}>
+            <span className="text-[#fff] font-[Poppins] text-[18px]">
+              Shop Now
+            </span>
+          </div>
         </Link>
       </div>
     </div>

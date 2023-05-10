@@ -10,6 +10,7 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { PaystackButton } from 'react-paystack';
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { server } from "../../server";
@@ -58,31 +59,56 @@ const Payment = () => {
     totalPrice: orderData?.totalPrice,
   };
 
-  const onApprove = async (data, actions) => {
-    return actions.order.capture().then(function (details) {
-      const { payer } = details;
+  // const onApprove = async (data, actions) => {
+  //   return actions.order.capture().then(function (details) {
+  //     const { payer } = details;
 
-      let paymentInfo = payer;
+  //     let paymentInfo = payer;
 
-      if (paymentInfo !== undefined) {
-        paypalPaymentHandler(paymentInfo);
-      }
-    });
-  };
+  //     if (paymentInfo !== undefined) {
+  //       paypalPaymentHandler(paymentInfo);
+  //     }
+  //   });
+  // };
 
-  const paypalPaymentHandler = async (paymentInfo) => {
+  // const paypalPaymentHandler = async (paymentInfo) => {
+  //   const config = {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   };
+
+  //   order.paymentInfo = {
+  //     id: paymentInfo.payer_id,
+  //     status: "succeeded",
+  //     type: "Paypal",
+  //   };
+
+  //   await axios
+  //     .post(`${server}/order/create-order`, order, config)
+  //     .then((res) => {
+  //       setOpen(false);
+  //       navigate("/order/success");
+  //       toast.success("Order successful!");
+  //       localStorage.setItem("cartItems", JSON.stringify([]));
+  //       localStorage.setItem("latestOrder", JSON.stringify([]));
+  //       window.location.reload();
+  //     });
+  // };
+
+  const onPaystackSuccessAction = async (reference) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
       },
     };
-
+  
     order.paymentInfo = {
-      id: paymentInfo.payer_id,
+      id: reference,
       status: "succeeded",
-      type: "Paypal",
+      type: "Paystack",
     };
-
+  
     await axios
       .post(`${server}/order/create-order`, order, config)
       .then((res) => {
@@ -94,6 +120,24 @@ const Payment = () => {
         window.location.reload();
       });
   };
+  
+  const onPaystackCloseAction = () => {
+    toast.warning("Payment window closed!");
+  };
+  
+  const paystackConfig = {
+    reference: new Date().getTime(),
+    email: user?.email,
+    amount: orderData?.totalPrice * 100,
+    publicKey: "pk_test_f740582cf266aa0f58ad5d26555108f497174ec8",
+  };
+  
+  <PaystackButton
+    text="Pay with Paystack"
+    className="btn-primary"
+    callback={onPaystackSuccessAction}
+    onClose={onPaystackCloseAction}
+    {...paystackConfig}/>
 
   const paymentData = {
     amount: Math.round(orderData?.totalPrice * 100),
@@ -183,7 +227,7 @@ const Payment = () => {
             user={user}
             open={open}
             setOpen={setOpen}
-            onApprove={onApprove}
+            // onApprove={onApprove}
             createOrder={createOrder}
             paymentHandler={paymentHandler}
             cashOnDeliveryHandler={cashOnDeliveryHandler}
@@ -359,7 +403,7 @@ const PaymentInfo = ({
                     <PayPalScriptProvider
                       options={{
                         "client-id":
-                          "Aczac4Ry9_QA1t4c7TKH9UusH3RTe6onyICPoCToHG10kjlNdI-qwobbW9JAHzaRQwFMn2-k660853jn",
+                          "",
                       }}
                     >
                       <PayPalButtons
